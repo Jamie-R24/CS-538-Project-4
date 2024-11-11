@@ -5,6 +5,8 @@ from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+folder_path = "./EDA Graphs/"
+
 df = pd.read_csv('onlineRetail.csv', encoding='ISO-8859-1')
 
 country_grouped = df.groupby('Country').agg({
@@ -22,7 +24,8 @@ plt.figure(figsize=(14, 8))
 barplot = sns.barplot(x='Total Quantity', y='Country', data=country_grouped) 
 for bar in barplot.patches: 
     barplot.annotate(f'{bar.get_width():.2f}', (bar.get_width(), bar.get_y() + bar.get_height() / 2), ha='left', va='center')
-plt.show() 
+plt.savefig(f'{folder_path}Total Quantity by County.png', format='png', dpi = 100)
+#plt.show() 
 
 # Plot Average Unit Price by Country 
 plt.figure(figsize=(14, 8))
@@ -34,8 +37,8 @@ for bar in barplot.patches:
 plt.title('Average Unit Price by Country')
 plt.xlabel('Average Unit Price')
 plt.ylabel('Country')
-plt.show()
-
+plt.savefig(f'{folder_path}Average Unit by County.png', format='png', dpi = 100)
+#plt.show()
 
 # Plot Number of Unique Customers by Country 
 plt.figure(figsize=(14, 8))
@@ -47,5 +50,6 @@ for bar in barplot.patches:
 plt.title('Number of Unique Customers by Country')
 plt.xlabel('Unique Customers')
 plt.ylabel('Country')
-plt.show()
+plt.savefig(f'{folder_path}Unique Customers by County.png', format='png', dpi = 100)
+#plt.show()
 
