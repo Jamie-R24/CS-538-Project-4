@@ -1,5 +1,6 @@
 import pandas as pd 
 import os
+import shap
 from sklearn.feature_selection import SelectKBest, f_classif
 from sklearn.preprocessing import StandardScaler 
 from sklearn.cluster import KMeans, MiniBatchKMeans
@@ -186,7 +187,20 @@ print(f'\tSilhouette Score (Feature Selection): {sil_score_selected}')
 print(f'\tDavies-Bouldin Score (Feature Selection): {db_score_selected}')
 print(f'\tInertia (WCSS) (Feature Selection): {inertia_selected}')
 
+#-----------------------------------
+#----SHAP Explainability------------
+#-----------------------------------
 
+kmeans_SHAP = KMeans(n_clusters=38, init='k-means++', max_iter=300, n_init=10, random_state=0) 
+kmeans_SHAP.fit(scaled_features) 
+def kmeans_predict(data): 
+    return kmeans_SHAP.predict(data)
 
+reduced_samples = shap.sample(scaled_features, 200)
+
+explainer = shap.KernelExplainer(kmeans_predict, reduced_samples)
+shap_values = explainer.shap_values(reduced_samples)
+
+shap.summary_plot(shap_values, reduced_samples, feature_names=customer_data.columns[1:])
 
 
